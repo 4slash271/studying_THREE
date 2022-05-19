@@ -165,7 +165,7 @@ class App{
         time *= 0.001; //second unit
         //자동으로 회전하게 한다
         // this._cube.rotation.x = time;
-        this._cube.rotation.y = time;
+        // this._cube.rotation.y = time;
 
 
     }
