@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>obj load</title>
+    <style>
+        body {margin: 0;}
+        canvas {width:100%; height: 100%;}
+    </style>
+</head>
+<body>
+    <script src="build/three.js"></script>
+    <script src="examples/js/loaders/OBJLoader.js"></script>
+    <script src="examples/js/controls/OrbitControls.js"></script>
+    
+
+    <script>
+        //장면
+        var scene = new THREE.Scene();
+
+        //주변광(조명)
+        var ambientLight = new THREE.AmbientLight(0xffffff);
+        scene.add(ambientLight);
+
+        //포인트광(핀 라이트)
+        var pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(1, 1, 1);
+        scene.add(pointLight);
+
+        //카메라
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.01, 1000);
+        camera.position.y = 0.25;
+
+        //렌더러
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0xffffff);
+        document.body.appendChild(renderer.domElement);
+        console.log(renderer.domElement);
+
+        //컨트롤(마우스 조작 기능)
+        var controls = new THREE.OrbitControls(camera);
+        controls.update();
+
+        //실시간 렌더링
+        animate();
+        function animate(){
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        //obj로더를 불러와 loader 변수에 담기
+        var loader = new THREE.OBJLoader;
+
+        //MeshBasicMaterial 기능(조명의 영향을 받는 질감)을 불러와 material 변수에 담기
+        var material = new THREE.MeshStandardMaterial;
+
+        //TextureLoader 기능으로 onepointfive_texture.png 파일을 불러와 texture 변수에 담기
+        var texture = new THREE.TextureLoader().load("examples/models/obj/female02/01_-_Default1noCulling.JPG")
+
+        material.map = texture;
+
+        loader.load("examples/models/obj/emerald.obj", function(object){
+            object.traverse(function(body){
+                if (body instanceof THREE.Mesh){
+                    body.material = material;
+                    scene.add(body);
+                }
+            })
+        })
+
+        
+
+
+
+
+    </script>
+</body>
+</html>
